@@ -23,7 +23,7 @@ class daomubiji(BaseSpider):
 		first_urls = hxp.select("//article[@class='article-content']/p/a/@href").extract()
 		for url in first_urls:
 			print url
-			yield Request(first_urls[0], callback=self.parse_item)
+			yield Request(url, callback=self.parse_item)
 
 	def parse_item(self, response):
 		with open('first.html','wb') as f:
@@ -39,11 +39,19 @@ class daomubiji(BaseSpider):
 		for i in range(len(urls)):
 			print 'i ===汉字是多少'+ str(i)
 			arr = titles[i].split(' ')
-			item['url'] = urls[0]
-			item['chapter'] = arr[0]
-			item['chapter_num'] = arr[1]
-			item['section'] = arr[2]
-			item['name'] = '盗墓笔记'
+			if len(arr)>=3:
+
+				item['url'] = urls[0]
+				item['chapter'] = arr[0]
+				item['chapter_num'] = arr[1]
+				item['section'] = arr[2]
+				item['name'] = '盗墓笔记'
+			else:
+				item['url'] = urls[0]
+				item['chapter'] = arr[0]
+				item['chapter_num'] = arr[1]
+				item['name'] = '盗墓笔记'
+
 			# time.sleep(1)
 			yield item
 
